@@ -1,0 +1,96 @@
+extends layout
+
+block append scripts
+  script(src='/socket.io/socket.io.js')
+  script.
+    var globalCache = { "selectedScreen": undefined }
+    var baseUrl = encodeURI(window.location.origin + '/api'),
+        selectedScreen,
+        screenSelectorId = "display-wall";
+    console.log("Talking to: " + baseUrl);
+
+    //wait for DOM
+    document.addEventListener('DOMContentLoaded', function () {
+      //color change event
+      document.querySelector("#color-slider-control").addEventListener('colorChanged', function (e) {
+        var send
+        api.setColor(e.detail, selectedScreen).then( function (response) {
+          console.log('color change send ' + response.ok)
+          }, function (response) {
+          console.log('Network error ' + response);
+          });
+      });
+
+      document.querySelector("#brightness-slider-control").addEventListener('brightnessChanged', function (e) {
+        api.setBrightnessCorrection(e.detail, selectedScreen).then( function (response) {
+          console.log('brightness correction send ' + response.ok)
+        }, function (response) {
+          console.log('Network error ' + response);
+        });
+      });
+      
+
+
+
+      //establish socket.io connection
+      var socket = io();
+      /* Connection Management */
+      socket.on('connect', function () {
+        console.log('WebSocket connected');
+        socket.emit('registerControl');
+      });
+      socket.on('connect_error', function (err) {
+        displayStatus('connection error:' + err);
+      });
+      socket.on('colorChanged', function (color, screen) {
+        if(screen) {
+          console.log('Color changed (' + screen + ')');
+        } else {
+          console.log('Color changed by control sever');
+
+        }
+      });
+    }); //end wait for DOM
+
+    //add event listener for screen selector
+    window.addEventListener('WebComponentsReady', function () {
+      document.querySelector("#ironScreenSelector").addEventListener('selected-changed', function (event) {
+        var screenId = event.detail.value;
+        console.log(screenId)
+        if(selectedScreen === screenId) {
+          selectedScreen = undefined;
+        } else {
+          selectedScreen = screenId;
+        }
+      });
+    }); // end polymer ready
+
+block append elements
+  //link(rel='import', href='/bower_components/core-selector/core-selector.html')
+  //link(rel='import', href='/elements/physical-screen.html')
+  link(rel='import', href='/elements/brightness-slider/brightness-slider.html')
+  link(rel='import', href='/elements/rgb-slider/rgb-slider.html')
+  link(rel='import', href='/elements/screen-selector/screen-selector.html')  
+  link(rel='import', href='/bower_components/iron-meta/iron-meta.html')
+
+block content
+  iron-meta(key="selectedScreen",value="dev1")
+  section(style="display: flex; flex-flow: row wrap")
+    div(style="flex: 1; padding-right: 16px;")
+      paper-material(elevation="1")
+        article
+          h2 Color selector
+          rgb-slider(id="color-slider-control")
+    div(style="flex: 1;")
+      paper-material(elevation="1")
+        article
+          h2 Brightness correction
+          brightness-slider(id="brightness-slider-control")
+  section
+    paper-material(elevation="1")
+      article
+        h2 Select a screen
+        p If no screen is selected, the correction or color is applied to all screens.
+        screen-selector(id="screen-selector-control",screens=screens)
+  
+  //include snippets/display-wall-screen-selector

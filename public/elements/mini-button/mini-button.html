@@ -1,0 +1,52 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+
+<dom-module id="mini-button" attributes="url data">
+  <template>
+    <paper-button raised on-click="onClick"><content></content></paper-button>
+  </template>
+  <script>
+  Polymer({
+    is: 'mini-button',
+    properties: {
+      url: {
+        type: String,
+        value: '',
+        reflectToAttribute: true
+      },
+      data: {
+        type: Object,
+        value: {},
+        reflectToAttribute: true
+      }
+    },
+    onClick: function() {
+      var encoded;
+      var req = new XMLHttpRequest();
+      req.open("POST", encodeURI(window.location.origin + this.url));
+      if(this.data) {
+        encoded = JSON.stringify(this.data);
+        req.setRequestHeader("Content-type","application/json");
+      }
+      req.responseType = 'text';
+
+      req.onload = function() {
+        if ( req.status === 200) {
+          console.log("200 OK:" + req.response);
+        } else {
+          Error('Data didn\'t load; Error code:' + req.statusText);
+        }
+      };
+
+      req.onerror = function() {
+        Error('Network error.');
+      };
+
+      if(encoded)
+        req.send(encoded)
+      else
+        req.send();
+    }
+  })
+  </script>
+</dom-module>

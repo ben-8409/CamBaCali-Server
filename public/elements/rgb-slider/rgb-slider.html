@@ -1,0 +1,113 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-slider/paper-slider.html">
+<link rel="import", href="/bower_components/paper-material/paper-material.html">
+
+<dom-module id="rgb-slider" attribute="screen">
+  <style>
+    /* Layout */
+    .flexbox {
+      display: flex;
+      /*width: 600px;*/
+      flex-flow: row warp;
+    }
+    .flexbox > div {
+      flex: 1;
+      min-width: 200px;
+    }
+    /* Preview */
+    .preview {
+      width: 180px;
+      height: 180px;
+    }
+
+    /* Form */
+    label {
+      display: block;
+    }
+
+    /* Colors */
+    paper-slider#redSlider {
+      --paper-slider-active-color: red;
+      --paper-slider-knob-color: red;
+    }
+    paper-slider#blueSlider {
+      --paper-slider-active-color: blue;
+      --paper-slider-knob-color: blue;
+    }
+    paper-slider#greenSlider {
+      --paper-slider-active-color: green;
+      --paper-slider-knob-color: green;
+    }
+  </style>
+  <template>
+    <div class="flexbox">
+
+      <div class="controls">
+        <p class="grid">
+          <label class="grid-cell fixed" for="redSlider">Red Channel:</label>
+          <paper-slider class="grid-cell max-330px" id="redSlider" editable="true" class="red" min="0" max="255" value="{{red}}">
+        </p>
+        <p class="slider">
+          <label for="greenSlider">Green Channel:</label>
+          <paper-slider editable="true" class="green" id="greenSlider" min="0" max="255" value="{{green}}">
+        </p>
+        <p class="slider">
+          <label for="blueSlider">Blue Channel:</label>
+          <paper-slider editable="true" class="blue" id="blueSlider" min="0" max="255" value="{{blue}}">
+        </p>
+      </div>
+      <div>
+        <label>Preview:</label>
+        <paper-material class="preview" elevation="2" style$="[[computePreviewStyle(red, green, blue)]]">
+          <div class="color"></div>
+        </paper-material>
+        <div>Your selected color: rgb(<span>{{red}}</span>, <span>{{green}}</span>, <span>{{blue}}</span>)</div>
+      </div>
+    </div>
+  </template>
+</dom-module>
+
+<script>
+Polymer({
+  is: 'rgb-slider',
+  properties: {
+    screen: {
+      type: String,
+      value: ''
+    },
+    //colors
+    red: {
+      type: Number,
+      value: 255
+    },
+    green: {
+      type: Number,
+      value: 255
+    },
+    blue: {
+      type: Number,
+      value: 255
+    },
+    //config
+    syncColor: {
+      type: Boolean,
+      value: true
+    }
+  },
+  computePreviewStyle: function(red, green, blue) {
+      return 'background: rgb(' + red +',' + green + ',' + blue + ')';
+  },
+  observers: [
+    "colorsChanged(screen, red, green, blue)"
+  ],
+  colorsChanged: function (screen, red, green, blue) {
+    if(!screen || screen != '') {
+      console.log('Screen is undefined or empty')
+    }
+    console.log('Red ' + red + ' Green ' + green + ' Blue ' + blue);
+    this.debounce('fireColorChange', function() {
+      this.fire('colorChanged',{"screen": screen, "red": red, "green": green, "blue": blue});
+    }, 500);
+  },
+});
+</script>

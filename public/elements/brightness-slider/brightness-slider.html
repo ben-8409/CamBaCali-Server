@@ -1,0 +1,195 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-slider/paper-slider.html">
+
+<dom-module id="brightness-slider" attribute="previewSize screen">
+  <style>
+  /* Layout */
+  .flexbox {
+    display: flex;
+    /*width: 600px;*/
+    flex-flow: row warp;
+  }
+  .flexbox > div {
+    flex: 1;
+    min-width: 200px;
+  }
+  /* Preview */
+  .preview {
+    width: 180px;
+    height: 90px;
+  }
+
+  /* Form */
+  label {
+    display: block;
+  }
+  /* Colors */
+  paper-slider#redSlider {
+    --paper-slider-active-color: red;
+    --paper-slider-knob-color: red;
+    --paper-slider-secondary-color: rgb(255, 127, 127);
+  }
+  paper-slider#blueSlider {
+    --paper-slider-active-color: blue;
+    --paper-slider-knob-color: blue;
+    --paper-slider-secondary-color: rgb(127, 127, 255);
+  }
+  paper-slider#greenSlider {
+    --paper-slider-active-color: green;
+    --paper-slider-knob-color: green;
+    --paper-slider-secondary-color: rgb(127, 255, 127);
+  }
+  </style>
+  <template>
+    <div class="flexbox">
+      <div class="controls">
+        <p class="slider">
+          <label for="redSlider">Red Channel:</label>
+          <paper-slider id="redSlider" editable="true" class="red" min="-1.0" max="1.0" step="0.01" value="{{red}}">
+        </p>
+        <p class="slider">
+          <label for="greenSlider">Green Channel:</label>
+          <paper-slider editable="true" class="green" id="greenSlider" min="-1.0" max="1.0" step="0.01" value="{{green}}">
+        </p>
+        <p class="slider">
+          <label for="blueSlider">Blue Channel:</label>
+          <paper-slider editable="true" class="blue" id="blueSlider" min="-1.0" max="1.0" step="0.01" value="{{blue}}">
+        </p>
+      </div>
+      <div>
+        <label>Color curves:</label>
+        <canvas id="canvasGraph" width="{{previewSize}}" height="{{previewSize}}"></canvas>
+        <p>This color curve graph illustrates the adjustments of the color curve for each channel set by the sliders.
+      </div>
+      <div>
+        <label>Preview:</label>
+        <paper-material elevation="2" style="width: 180px;">
+        <div class="preview" style="background-color: rgb(128,128,128)"></div>
+        <div class="preview" style$="[[previewStyle]]"></div>
+        </paper-material>
+        <p>This color patch previews the estimated effect of your color adjustments on a neutral patch of color.</p>
+      </div>
+
+    </div>
+  </template>
+</dom-module>
+
+<script>
+Polymer({
+  is: 'brightness-slider',
+  properties: {
+    previewSize: {
+      type: Number,
+      value: 180
+    },
+    //colors
+    red: {
+      type: Number,
+      value: 0.00
+    },
+    green: {
+      type: Number,
+      value: 0.00
+    },
+    blue: {
+      type: Number,
+      value: 0.00
+    },
+    max: {
+      type: Number,
+      value: 255
+    },
+    //deltas
+    redDelta: {
+      type: Number,
+      computed: 'computeDelta(red, max)'
+    },
+    greenDelta: {
+      type: Number,
+      computed: 'computeDelta(green, max)'
+    },
+    blueDelta: {
+      type: Number,
+      computed: 'computeDelta(blue, max)'
+    },
+    previewStyle: {
+      type: String,
+      computed: 'computePreviewStyle(red, green, blue, max)'
+    }
+  },
+  computeCoords: function(a) {
+    var max = this.previewSize;
+    var aPixels = Math.round((a * 0.25) * max);
+    if(a === 0) {
+      return { b: { x: 0, y: max }, e: { x: max, y: 0}}
+    } else if(a<0) {
+      return { b: { x: aPixels, y: max}, e: { x: max - aPixels, y: 0}}
+    } else { // a>0
+    //a to pixels
+      return { b: { x: 0, y: max - aPixels}, e: { x: max, y: max - aPixels}}
+    }
+  },
+
+  draw: function() {
+    console.log("DRAW!");
+    var max = this.previewSize
+    var canvas = document.querySelector("#canvasGraph");
+    var ctx = canvas.getContext('2d');
+    //clear
+    ctx.setTransform( 1, 0, 0, 1, 0, 0);
+    ctx.fillStyle = 'rgba(255,255,255,1)';
+    ctx.fillRect(0, 0, max, max);
+    //
+
+    //red
+    var redPixels = this.computeDelta(this.red, max);
+    ctx.setTransform( 1, 0, 0, 1, 0, -redPixels)
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(255,0,0,.33)';
+    ctx.moveTo(0, max);
+    ctx.lineTo(max, 0);
+    ctx.stroke();
+    //green
+    var greenPixels = this.computeDelta(this.green, max);
+    ctx.setTransform( 1, 0, 0, 1, 0, -greenPixels)
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(0,255,0,.33)';
+    ctx.moveTo(0,max);
+    ctx.lineTo(max,0);
+    ctx.stroke();
+    //blue
+    var bluePixels = this.computeDelta(this.blue, max);
+    ctx.setTransform( 1, 0, 0, 1, 0, -bluePixels)
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(0,0,255,.33)';
+    ctx.moveTo(0,max);
+    ctx.lineTo(max,0);
+    ctx.stroke();
+  },
+  ready: function() {
+    this.draw();
+  },
+  computeDelta: function( value, max ) {
+    return Math.round((value * 0.25) * max);
+  },
+  computePreviewStyle: function(red, green, blue, max) {
+    var red = 128 + this.computeDelta(red, max);
+    var green = 128 + this.computeDelta(green, max);
+    var blue = 128 + this.computeDelta(blue, max)
+    return 'background: rgb(' +
+      red   + ',' +
+      green + ',' +
+      blue  + ')';
+  },
+  observers: [
+    "colorsChanged(red, green, blue)"
+  ],
+  colorsChanged: function (red, green, blue) {
+    this.draw();
+    console.log('Red ' + red + ' Green ' + green + ' Blue ' + blue);
+    this.debounce('fireBrightnessChanged', function() {
+      this.fire('brightnessChanged',{"red": red, "green": green, "blue": blue});
+    }, 500);
+  },
+});
+</script>

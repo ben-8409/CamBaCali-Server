@@ -1,0 +1,44 @@
+body {
+  padding: 0;
+  margin: 0;
+  font: 18px sans-serif;
+  /* Standard */
+  transition: all 5s ease-in;
+  background-color: #fce4ec;
+}
+
+/* top level sematic structuring should have a padding */
+body > header, body > section, body > footer {
+  padding: 9px 18px;
+  margin: 0;
+}
+
+
+
+/* fonts*/
+h1,h2,h3,h4 {
+  font-weight: 500;
+}
+
+/* colors */
+body > header {
+  background-color: #e91e63;
+  color: #fce4ec;
+  box-shadow: 0px 4px 9px #f48fb1;
+}
+
+
+/* special elements */
+.screen-selector {
+  display: inline-block;
+  width: 160px;
+  height: 90px;
+  border: 1px solid rgb(128,128,128);
+}
+.screen-selector-active {
+  border-color: rgb(128,255,128);
+}
+
+a {
+  color: #00B7FF;
+}

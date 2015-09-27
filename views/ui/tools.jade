@@ -1,0 +1,44 @@
+extends layout
+
+block append elements
+  link(rel='import', href='/elements/feedback-command/feedback-command.html')
+  link(rel='import', href='/bower_components/paper-button/paper-button.html')
+
+block content
+  section
+    h1 Display control tools
+    paper-material(elevation="1")
+      article
+        h1 Start and Stop display color component
+        feedback-command(text="Start", url="/api/screens/start")
+        feedback-command(text="Stop", url="/api/screens/kill")
+    paper-material(elevation="1")
+      article
+        h1 Reset calibration parameters
+        feedback-command(text="Reset screens", url="/api/screens/reset")
+    paper-material(elevation="1")
+      article
+        h1 Process a test color sample
+        feedback-command(text="Process a test sample", url="/api/camera/sample", with-data)
+    paper-material(elevation="1")
+      article
+        h1 Test mask creation
+        feedback-command(text="Create", url="/api/camera/createMasks",data="{\"calibrationId\": \"#{calibrationUuid}\"}")
+  section
+    h1 Tools for error dectection, debugging and development
+    paper-material(elevation="1")
+      article
+        h1 Test camera dectection
+        feedback-command(text="Detect", url="/api/camera/auto-detect")
+    paper-material(elevation="1")
+      article
+        h1 Test image capturing
+        feedback-command(text="Capture and download", url="/api/camera/capture")
+    paper-material(elevation="1")
+      article
+        h1 Process a test color sample
+        feedback-command(text="Process a test sample", url="/api/camera/sample", with-data)
+    paper-material(elevation="1")
+      article
+        h1 Test mask creation
+        feedback-command(text="Create", url="/api/camera/createMasks",data="{\"calibrationId\": \"#{calibrationUuid}\"}")

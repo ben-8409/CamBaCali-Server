@@ -1,0 +1,13 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/control.css', no-shim)
+    block scripts
+    block elements
+
+  body
+    header
+      h1= title
+    div(class="main")
+      block content;

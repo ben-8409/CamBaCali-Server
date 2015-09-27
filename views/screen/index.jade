@@ -1,0 +1,32 @@
+doctype html
+html
+  head
+    link(rel='stylesheet', href='/stylesheets/screen.css')
+    script(src='/socket.io/socket.io.js')
+    script.
+      var screenId = "#{screen}";
+      function displayStatus (statusMessage) {
+        document.getElementById('statusMessage').textContent = statusMessage;
+        };
+
+      //wait for DOM
+      document.addEventListener('DOMContentLoaded', function (event) {
+        var socket = io();
+        /* Connection Management */
+        socket.on('connect', function () {
+          displayStatus('connected');
+          socket.emit('registerScreen', screenId);
+        });
+        socket.on('connect_error', function (err) {
+          displayStatus('connection error:' + err);
+        });
+        socket.on('changeColor', function (color) {
+          document.body.style.backgroundColor = color;
+        });
+      }); //end wait for DOM
+
+  body
+    section(style='display: none;')
+      p Screen <strong>#{screen}</strong>
+      p Connection status: 
+        em#statusMessage not connected

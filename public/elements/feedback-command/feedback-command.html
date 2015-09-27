@@ -1,0 +1,77 @@
+<!-- An element that provides facilities to send a XMLHTTPRequest and display the response -->
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/paper-input/paper-textarea.html">
+
+
+<dom-module id="feedback-command" attributes="text url data with-data">
+  <link rel="import" type="css" href="feedback-command.css">
+  <template>
+    <p>
+      <paper-button raised on-click="run">{{text}}</paper-button>
+    </p>
+    <template is="dom-if" if={{withData}}>
+      <paper-textarea id="data" label="Send this data:" value="{{data}}" rows=20 cols=8></paper-textarea>
+    </template>
+    <paper-textarea id="response" label="Server response:" value="{{response}}" readonly></paper-textarea>
+  </template>
+  <script>
+  Polymer({
+    is: 'feedback-command',
+    properties: {
+      url: {
+        type: String,
+        value: ''
+      },
+      text: {
+        type: String,
+        value: 'Feedback Button'
+      },
+      data: {
+        type: String,
+        value: '',
+        notify: true
+      },
+      withData: {
+        type: Boolean,
+        value: false,
+        reflectToAttribute: true
+      }
+    },
+    run: function() {
+
+      var responseElement = this.$.response;
+      responseElement.innerHTML = '';
+      var encoded;
+      var req = new XMLHttpRequest();
+      req.open("POST", encodeURI(window.location.origin + this.url));
+      //if(Object.keys(this.data).length > 0) {
+      if(this.data !== '') {
+        console.log(this.data);
+        //encoded = JSON.stringify(this.data);
+        encoded = this.data;
+        req.setRequestHeader("Content-type", "application/json");
+      }
+      req.responseType = 'text';
+
+      req.onload = function() {
+        responseElement.innerHTML = req.response;
+        if ( req.status === 200) {
+          console.log("200 OK:" + req.response);
+        } else {
+          Error('Data didn\'t load; Error code:' + req.statusText);
+        }
+      };
+
+      req.onerror = function() {
+        Error('Network error.');
+      };
+
+      if(encoded)
+        req.send(encoded)
+      else
+        req.send();
+    }
+  })
+  </script>
+</dom-module>

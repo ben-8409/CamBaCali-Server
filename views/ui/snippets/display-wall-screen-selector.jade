@@ -1,0 +1,6 @@
+core-selector(id="display-wall", style="display: flex; flex-flow: row wrap")
+  if(!screens)
+    p No results available.
+  else
+    each screenValues,screenId in screens
+      physical-screen(screenId= screenId, red= screenValues[0], green= screenValues[1], blue= screenValues[2], uuid= uuid)

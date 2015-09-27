@@ -1,0 +1,10 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "rules": {
+    "quotes": [1, "single", "avoid-escape"],
+    "no-mixed-requires": [0, false]
+    }
+}

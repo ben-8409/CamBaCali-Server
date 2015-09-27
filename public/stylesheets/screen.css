@@ -1,0 +1,12 @@
+html,body {
+  /* Fill the whole screen to allow hiding of the mouse cursor */
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+body {
+  /* Use CSS transition to animate the change of the backround color */
+  transition: all 1s ease-in;
+  /* Hide the mouse cursor */
+  cursor: none;
+}

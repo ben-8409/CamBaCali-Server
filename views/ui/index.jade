@@ -1,0 +1,22 @@
+extends layout
+
+block append elements
+  link(rel='import', href='/elements/feedback-command/feedback-command.html')
+    
+block content
+  section
+    header
+      h1 Welcome to the Control Interface
+    p Use the buttons on the left side to chose from the calibration software functionality.
+    
+    paper-material(elevation="1")
+      article
+        header
+          h1 How the calibration works
+        p The calibration process works by capturing pictures of the display wall, automatically idenfitying the physical screens on these and calculating their average color. That color is compared to a reference color and is larger then a defined threshold, the color correction capabilities of the graphics card is used to modify the input signal to that monitor, so that both screens show the same uniform color.
+        ol
+          li Start the display wall.<br> Turn on the hardware and wait until the boot is completed. Wait until each physical screen is powered on. How to do this depends on your local setup.
+          li Start the calibration screens.<br> This software allows you to display a color on the screens, synchronized and fully controllabe via this interface.    
+            feedback-command(text="Start", url="/api/screens/start")
+          li Place the camera.<br> Position the camera so the the full display wall is visible. Confirm using the viewfinder or by shooting a sample picture. Then connect the camera via USB to the pc running the calibration software. The software gphoto2 is used to remote control the camera. Notice that is is only possible if the device is not mounted. If necessary, use the file manager to umount the camera.
+          li Start the calibration. Open the calibration view by clicking "Calibration" in the left drawer.

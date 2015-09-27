@@ -1,0 +1,11 @@
+{
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "rules": {
+    "quotes": [1, "single", "avoid-escape"],
+    "no-mixed-requires": [0, false],
+    "no-use-before-define": [1, "nofunc"]
+    }
+}

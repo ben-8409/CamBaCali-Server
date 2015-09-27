@@ -1,0 +1,49 @@
+extends layout
+
+block append elements
+  link(rel='import', href='/elements/feedback-command/feedback-command.html')
+  link(rel="import", href="/bower_components/iron-form/iron-form.html")
+  link(rel="import", href="/bower_components/iron-icons/iron-icons.html")
+  link(rel="import", href="/bower_components/iron-icon/iron-icon.html")
+  link(rel="import", href="/bower_components/iron-flex-layout/iron-flex-layout.html")
+  link(rel="import", href="/bower_components/paper-menu/paper-menu.html")
+  link(rel="import", href="/bower_components/paper-button/paper-button.html")
+  link(rel="import", href="/bower_components/paper-input/paper-textarea.html")
+  link(rel="import", href="/bower_components/paper-slider/paper-slider.html")
+  link(rel="import", href="/bower_components/paper-input/paper-input.html")
+  link(rel="import", href="/bower_components/paper-dropdown-menu/paper-dropdown-menu.html")
+
+block content
+  section
+    header
+      h1 Preface
+    p Each calibration is associated with a unique id. You can use this idea to reference the results of all processes within this calibration "run" as well as calculated parameters later on. You will also be able to download a calibration for later use.
+    p This calibration run has the unique identifier:
+      strong #{calibration.uuid}
+  section
+    header 
+      h1 Calibration Sequence
+    article
+      form(id="startForm", is="iron-form", method="post", action="/api/calibrations/start")
+        p
+          paper-input(label="Calibration ID",name="calibrationId", value=calibration.uuid, required)
+        p(class="layout horizontal")
+          paper-dropdown-menu(label="Reference Screen", name="referenceScreen", required)
+            paper-menu(class="dropdown-content", style="padding-top: 0px")
+              each screenId in screenIds
+                paper-item(value="screenId")= screenId
+          paper-dropdown-menu(label="Strategy", name="strategy", required)
+            paper-menu(class="dropdown-content", style="padding-top: 0px")
+              paper-item(value="one") One
+              paper-item(value="two") Two
+              paper-item(value="three") Three
+          paper-input(label="Number of Iterations", pattern="(\\d+)", type="Number" name="laps", min="1", max="19" default="2", value="2", required)
+        paper-button(raised, onclick="submitForm()") Start
+        script.
+          function submitForm() {
+            var form = document.querySelector('#startForm');
+            api.postAsJson(form.action, form.serialize());
+          }
+    article
+      h1 Results
+      p While the calibration process is running, results will get displayed on page "results".

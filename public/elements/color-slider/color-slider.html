@@ -1,0 +1,39 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-slider/paper-slider.html">
+
+<dom-module id="color-slider" attribute="color">
+  <style>
+    p {
+      display: flex;
+      flex-flow: column wrap;
+    }
+    label {
+      flex: 1 50px content;
+    }
+    paper-slider {
+      flex: 1 200px content
+    }
+  </style>
+  <template>
+    <p class="slider">
+      <label for="Slider">{{color}}</label>
+      <paper-slider id="slider" editable='true' min="0" max="255" value="{{value}}"
+    </p>
+  </template>
+</dom-module>
+
+<script>
+Polymer({
+  is: 'color-slider',
+  properties: {
+    value: {
+      type: Number,
+      value: 255,
+      notify: true
+    },
+    color: {
+      type: String
+    }
+  }
+});
+</script>

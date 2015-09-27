@@ -1,0 +1,18 @@
+/* Amber Color Pallete based on Google Material Design - Amber
+ * see: http://www.google.com/design/spec/style/color.html#color-color-palette
+ * 
+ * Primary: Amber ( #ffc107 )
+ *   Hue 1: Amber 100 ( #ffecb3 )
+ *   Hue 2: Amber 800 ( #ff8f00 )
+ *  Accent: Light Blue ( #03a9f4 )
+ *   Hue 1: Light Blue A400 (#00b0ff)
+ */
+
+body {
+  background: #ffecb3;
+  color: rgba(0,0,0,0.8);
+}
+
+article {
+  background: rgba(255,255,255,0.9);
+}

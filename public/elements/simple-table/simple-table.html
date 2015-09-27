@@ -1,0 +1,61 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<polymer-element name="simple-table" attributes="rows dataSets">
+  <template>
+    <table>
+      <thead>
+        <tr>
+          <th>screen/uuid</th>
+          <template repeat="{{dataSet in dataSets}}">
+            <th>{{dataSet.title}}</th>
+          </template>
+        </tr>
+      </thead>
+      <tbody>
+        <template repeat="{{row in rows}}">
+          <tr>
+            <th>{{row}}</th>
+            <template repeat="{{dataSet in dataSets}}">
+              <td>{{dataSet.values[row]}}</td>
+            </template>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </template>
+  <script>
+  Polymer({
+    rows: [ 'a', 'b', 'c' ],
+    dataSets: [ {
+      'title': 'eins',
+      'values': {
+        'a': 1,
+        'b': 2,
+        'c': 3
+      }
+    }
+    ],
+    addData: function addData(set) {
+      
+      if(!set.title && set.title === '') {
+        console.log('No title supplied, data ignored.');
+      }
+      var inserted = false;
+      this.dataSets.forEach( function ( cur ) {
+        if(cur.title === set.title) {
+          cur.values = set.values;
+          console.log('Data set ' + set.title + ' updated.');
+          inserted = true;
+        }
+      });
+      if (!inserted) {
+        this.dataSets.push(set);
+        console.log('Data set ' + set.title + ' appended.');
+      }
+    },
+    clearDataSet: function clearDataSet() {
+      this.dataSets = [];
+    }
+  })
+  </script>
+</polymer-element>

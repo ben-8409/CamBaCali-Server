@@ -1,0 +1,36 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<polymer-element name="physical-screen" attributes="screenId red green blue resultUUID deltaE" class="{{ {attention: deltaE > '10'} | tokenList}}">
+  <template>
+    <style>
+    #display-wall {
+        display: flex;
+        flex-flow: row wrap;
+    }
+    physical-screen {
+      flex: none 1 auto;
+      width: -moz-calc(100%/(7 + 1));
+      height: 5.6vw;
+      border: 3px solid black;
+    }
+    physical-screen.core-selected {
+      border-color: turquoise;
+    }
+    physical-screen div {
+      width: 100%;
+      height: 100%;
+    }
+    </style>
+    <div style="background-color: rgb({{red}},{{green}},{{blue}})" id="physical-screen-{{screenId}}" on-click="{{onClick}}">{{screenId}}</div>
+  </template>
+  <script>
+  Polymer({
+    red: 127,
+    green: 127,
+    blue : 127,
+    screenId : 'dev1',
+    deltaE : 0,
+    resultUUID : ''
+  });
+  </script>
+</polymer-element>

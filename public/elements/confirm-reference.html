@@ -1,0 +1,26 @@
+<link rel="import" href="/bower_components/core-icon-button/core-icon-button.html">
+
+<polymer-element name="confirm-reference" attributes="uuid reference">
+  <template>
+    <div>
+      Click to set screen {{reference}} as reference (Result UUID: {{uuid}})
+      <template bind if="{{ uuid != '' }}">
+        <core-icon-button icon="check" on-click="{{onClick}}" ></core-icon-button>
+      </template>
+    </div>
+  </template>
+  <script>
+  Polymer({ 
+    uuid: '',
+    reference: '',
+    onClick: function() {
+      if(this.isSet()) {
+        this.fire('referenceConfirmed',{uuid: this.uuid, screenId:this.reference});
+      }
+    },
+    isSet : function() {
+      return this.uuid!='' && this.reference!='' ;
+    }
+  });
+  </script>
+</polymer-element>

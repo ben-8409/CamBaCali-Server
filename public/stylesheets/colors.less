@@ -1,0 +1,103 @@
+/* Color palettes */
+@grey-100: #f5f5f5;
+@grey-300: #e0e0e0;
+@grey-800: #424242;
+@grey-900: #212121;
+
+/* GREEN */
+@green-100: #c8e6c9;
+@green-500: #4caf50;
+@green-800: #2e7d32;
+
+/* YELLOW */
+@yellow-a100: #ffff8d;
+
+/* ORANGE */
+@orange-50: #fff3e0;
+@orange-500: #ff9800;
+@orange-800: #ef6c00;
+
+/* RED */
+@red-50: #ffebee;
+@red-400: #ef5350;
+@red-800: #c62828;
+
+/* BLUE */
+@blue-50: #e3f2fd;
+@blue-400: #42a5f5;
+@blue-800: #1565C0;
+
+
+/* COLORS */
+body {
+  background-color: @grey-100;
+  color: @grey-900;
+}
+#drawer {
+  background-color: @grey-300;
+}
+/* TEXT */
+p {
+  color: @grey-900;
+}
+// START
+.start {
+  paper-toolbar {
+    background-color: @green-800;
+  }
+  nav {
+    .iron-selected {
+      color: @green-500;
+    }
+  }
+}
+// calibration
+.calibration {
+  paper-toolbar {
+    background-color: @orange-800;
+  }
+  nav {
+    .iron-selected {
+      color: @orange-500;
+    }
+  }
+}
+// colors
+.colors {
+  paper-toolbar {
+    background-color: @blue-800;
+  }
+  nav {
+    .iron-selected {
+      color: @blue-400;
+    }
+  }
+}
+// tools
+.tools {
+  paper-toolbar {
+    background-color: @red-800;
+  }
+  nav {
+    .iron-selected {
+      color: @red-400;
+    }
+  }
+}
+article {
+  background-color:#FAFAFA;
+}
+nav {
+  color: @grey-800;
+  a {
+    color: inherit;
+  }
+  .iron-selected {
+    background-color: @grey-100;
+    color: inherit;
+  }
+}
+/* FIX label */
+label{
+  color: #757575;
+}

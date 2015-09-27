@@ -1,0 +1,57 @@
+extends layout
+
+block append scripts
+  script(src='/javascripts/draw-evaluation.js')
+  
+block append elements
+  link(rel='import', href='/elements/feedback-command/feedback-command.html')
+  link(rel="import", href="/bower_components/iron-form/iron-form.html")
+  link(rel="import", href="/bower_components/paper-button/paper-button.html")
+  link(rel="import", href="/bower_components/paper-input/paper-textarea.html")
+  link(rel="import", href="/bower_components/paper-slider/paper-slider.html")
+  link(rel="import", href="/bower_components/paper-input/paper-input.html")
+
+block content
+  section
+    header 
+      h1 Evaluation Sequence
+    article
+      form(id="startForm", is="iron-form", method="post", action="/api/evaluate/start")
+        p
+          paper-input(label="Calibration ID",name="calibrationId", value="", required)
+        p
+          paper-input(label="Measurement Name", name="name", value="", required)
+        p
+          paper-button(raised, onclick="submitStartForm()") Start
+        script.
+          function submitStartForm() {
+            var form = document.querySelector('#startForm');
+            api.postAsJson(form.action, form.serialize());
+          }
+  section
+    header
+      h1 Results
+    article
+      form(id="loadForm", is="iron-form", method="post", action="/api/evaluate/results")
+        p
+          paper-input(label="Calibration ID", name="calibrationId", value="", required)
+        p
+          paper-input(label="Measurement Name", name="name", value="", required)
+        p
+          paper-button(raised, onclick="submitLoadForm()") Load
+        script.
+          function submitLoadForm() {
+            var loadForm = document.querySelector('#loadForm');
+            console.log(loadForm.serialize());
+            api.postAsJson(loadForm.action, loadForm.serialize()).then(
+              function (result) {
+                console.log(result);
+                drawEva.draw('#canvasGraph');
+              }, function (error) {
+                console.log('Could not load data!');
+              }
+            );
+          }
+      article
+        canvas(id="canvasGraph", width="800", height="200")
+

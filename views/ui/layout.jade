@@ -1,0 +1,44 @@
+doctype html
+html
+  head
+    title= title
+    //link(rel='stylesheet', href='/stylesheets/color-amber.css', no-shim)
+    link(href='http://fonts.googleapis.com/css?family=Roboto:400,400italic,700,700italic' rel='stylesheet',type='text/css', no-shim)
+    link(rel='stylesheet', href='/stylesheets/control.css', no-shim)
+    link(rel='stylesheet', href='/stylesheets/colors.css', no-shim)
+
+    block scripts
+      script(src='/bower_components/webcomponentsjs/webcomponents-lite.min.js')
+      script(src='/javascripts/api.js')
+    block elements
+      link(rel='import', href='/bower_components/polymer/polymer.html')
+      link(rel='import', href='/bower_components/iron-selector/iron-selector.html')
+      link(rel='import', href='/bower_components/paper-item/paper-item.html')
+      link(rel='import', href='/bower_components/paper-styles/paper-styles.html')
+      link(rel='import', href='/bower_components/paper-button/paper-button.html')
+      link(rel='import', href='/bower_components/paper-material/paper-material.html')
+      link(rel='import', href='/bower_components/paper-drawer-panel/paper-drawer-panel.html')
+      link(rel='import', href='/bower_components/paper-header-panel/paper-header-panel.html')
+      link(rel='import', href='/bower_components/paper-toolbar/paper-toolbar.html')
+
+  body(class="fullbleed" + short, unresolved)
+    paper-drawer-panel
+      paper-header-panel(drawer)
+        paper-toolbar 
+          div Calibration Control
+        nav
+          iron-selector(attr-for-selected="name", selected=short)
+            paper-item(name="start")
+              a(href="/ui") Start
+            paper-item(name="calibration")
+              a(href="/ui/calibration") Calibration
+            paper-item(name="evaluate")
+              a(href="/ui/evaluate") Evaluate
+            paper-item(name="colors")
+              a(href="/ui/colors") Color control
+            paper-item(name="tools")
+              a(href="/ui/tools") Tools \& System
+      paper-header-panel(main)
+        paper-toolbar 
+          h1= title
+        block content

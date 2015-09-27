@@ -1,0 +1,22 @@
+article {
+  max-width: 600px;
+}
+.mini-button {
+  padding: 10px;
+  background: grey;
+  color: black;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+.mini-button:hover {
+  background: #ADD8E6;
+}
+.response {
+  font-family: monospace;
+  font-size: 10px;
+  padding: 10px;
+  min-width: 400px;
+  min-height: 200px;
+  background: rgb(200,200,200);
+}

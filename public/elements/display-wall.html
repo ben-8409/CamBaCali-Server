@@ -1,0 +1,33 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/elements/physical-screen.html">
+
+<polymer-element name="display-wall" attributes="screens">
+  <template>
+    <style>
+      .display-wall-container {
+        display: flex;
+        flex-flow: row warp;
+      }
+      .display-wall-container physical-screen {
+        flex: none 1 auto;
+        width: -moz-calc(100%/{{columns + 1}});
+      }
+    </style>
+    <div class="display-wall-container">
+      <template repeat="{{screen in screens}}">
+        <physical-screen screenId="{{screen}}"></physical-screen>
+      </template>
+    </div>
+  </template>
+  <script>
+  Polymer({
+    screens: [],
+    ready: function () {
+      console.log(this.screens);
+    },
+    screensChanged: function() {
+      console.log(this.screens);
+    },
+  });
+  </script>
+</polymer-element>
