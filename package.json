@@ -1,0 +1,31 @@
+{
+  "name": "cambacali-server",
+  "description": "Camera based calibration for large high resolution display walls - Server component",
+  "version": "0.6.0",
+  "dependencies": {
+    "body-parser": "^1.12.x",
+    "bower": "^1.4.x",
+    "debug": "^2.2.x",
+    "express": "^4.12.x",
+    "jade": "^1.10.x",
+    "less-middleware": "^2.0.x",
+    "mathjs": "^2.0.x",
+    "node-uuid": "^1.4.x",
+    "promise": "^7.0.x",
+    "socket.io": "^1.3.x",
+    "temp": "^0.8.x",
+    "temporal": "^0.4.x"
+  },
+  "devDependencies": {
+    "chai": "^3.0.x",
+    "chai-as-promised": "^5.1.x",
+    "mocha": "^2.2.x",
+    "mocha-traceur": "^2.1.x"
+  },
+  "scripts": {
+    "start": "node --harmony server.js",
+    "debug": "DEBUG=calib* node server.js",
+    "test": "mocha test",
+    "postinstall": "bower install"
+  }
+}
